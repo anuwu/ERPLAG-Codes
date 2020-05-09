@@ -13,9 +13,9 @@ main:
 		SUB RSP, 6											; making space for declaration
 		SUB RSP, 2											; making space for declaration
 
-		MOV RDI, inputIntPrompt								; get_value
+		MOV RDI, @inputIntPrompt								; get_value
 		MOV RBX, -2
-		CALL getValuePrimitive
+		CALL @getValuePrimitive
 
 		MOV AX, [RBP - 2]
 		PUSH AX
@@ -82,8 +82,7 @@ LABEL3:
 		MOVSX AX, AL
 		PUSH AX
 		POP AX
-		CMP AX, 0
-								; Checking while loop condition
+		CMP AX, 0								; Checking while loop condition
 		JE WHILE5
 
 		MOV BX, 2
@@ -117,7 +116,7 @@ LABEL3:
 
 		MOV AX, 0
 		MOV BX, [RBP - 6]
-		CALL dynamicDeclCheck
+		CALL @dynamicDeclCheck
 
 		PUSH BX												; saving register for malloc
 		PUSH AX												; saving register for malloc
@@ -138,7 +137,7 @@ LABEL3:
 		PUSH AX
 		MOV AX, [RBP - 2]
 		PUSH AX
-		CALL intBinary
+		CALL @main
 		ADD RSP, 16
 		MOV RDI, [RBP - 20]
 		MOV CX, 0
@@ -146,7 +145,7 @@ LABEL3:
 		SUB DX, CX
 		ADD DX, 1
 		ADD DX, DX
-		CALL printIntegerArr
+		CALL @printIntegerArr
 
 
 		MOV RSP, RBP
@@ -171,7 +170,7 @@ twosComplement:
 		MOV AX, 0
 		MOV BX, [RBP - 2]
 		MOV CX, [RBP + 24]
-		CALL boundCheck
+		CALL @boundCheck
 
 		MOV AX, [RDI + RBX]
 		PUSH AX
@@ -184,8 +183,7 @@ twosComplement:
 		MOVSX AX, AL
 		PUSH AX
 		POP AX
-		CMP AX, 0
-								; Checking while loop condition
+		CMP AX, 0								; Checking while loop condition
 		JE WHILE7
 
 		MOV BX, 1
@@ -227,8 +225,7 @@ twosComplement:
 		MOVSX AX, AL
 		PUSH AX
 		POP AX
-		CMP AX, 0
-								; Checking while loop condition
+		CMP AX, 0								; Checking while loop condition
 		JE WHILE9
 
 		MOV BX, 1
@@ -237,7 +234,7 @@ twosComplement:
 		MOV AX, 0
 		MOV BX, [RBP - 2]
 		MOV CX, [RBP + 24]
-		CALL boundCheck
+		CALL @boundCheck
 
 		MOV AX, [RDI + RBX]
 		PUSH AX
@@ -249,12 +246,11 @@ twosComplement:
 		MOV AX, 0
 		MOV BX, [RBP - 2]
 		MOV CX, [RBP + 24]
-		CALL boundCheck
+		CALL @boundCheck
 
 		POP AX
 		NEG AX
-		MOV [RDI + RBX], AX
-									; store variable
+		MOV [RDI + RBX], AX									; store variable
 
 		MOV BX, 1
 		PUSH BX
@@ -278,7 +274,7 @@ twosComplement:
 
 ;--------------------------------------------------------------------------------------------------
 
-intBinary:
+@main:
 		PUSH RBP
 		MOV RBP, RSP
 
@@ -289,11 +285,10 @@ intBinary:
 		MOV AX, 0
 		MOV BX, 0
 		MOV CX, [RBP + 28]
-		CALL boundCheck
+		CALL @boundCheck
 
 		POP AX
-		MOV [RDI + RBX], AX
-									; store variable
+		MOV [RDI + RBX], AX									; store variable
 
 		MOV BX, 1
 		PUSH BX
@@ -313,8 +308,7 @@ intBinary:
 		MOVSX AX, AL
 		PUSH AX
 		POP AX
-		CMP AX, 0
-								; Checking while loop condition
+		CMP AX, 0								; Checking while loop condition
 		JE WHILE11
 
 		MOV BX, 2
@@ -342,11 +336,10 @@ intBinary:
 		MOV AX, 0
 		MOV BX, [RBP - 2]
 		MOV CX, [RBP + 28]
-		CALL boundCheck
+		CALL @boundCheck
 
 		POP AX
-		MOV [RDI + RBX], AX
-									; store variable
+		MOV [RDI + RBX], AX									; store variable
 
 		MOV BX, 2
 		PUSH BX
@@ -450,15 +443,14 @@ binRev:
 		MOVSX AX, AL
 		PUSH AX
 		POP AX
-		CMP AX, 0
-								; Checking while loop condition
+		CMP AX, 0								; Checking while loop condition
 		JE WHILE16
 
 		MOV RDI, [RBP + 16]
 		MOV AX, [RBP + 26]
 		MOV BX, [RBP - 2]
 		MOV CX, [RBP + 24]
-		CALL boundCheck
+		CALL @boundCheck
 
 		MOV BX, [RDI + RBX]
 		PUSH BX
@@ -469,7 +461,7 @@ binRev:
 		MOV AX, [RBP + 26]
 		MOV BX, [RBP - 4]
 		MOV CX, [RBP + 24]
-		CALL boundCheck
+		CALL @boundCheck
 
 		MOV BX, [RDI + RBX]
 		PUSH BX
@@ -494,11 +486,10 @@ binRev:
 		MOV AX, [RBP + 26]
 		MOV BX, [RBP - 2]
 		MOV CX, [RBP + 24]
-		CALL boundCheck
+		CALL @boundCheck
 
 		POP AX
-		MOV [RDI + RBX], AX
-									; store variable
+		MOV [RDI + RBX], AX									; store variable
 
 		MOV BX, [RBP - 8]
 		PUSH BX
@@ -506,11 +497,10 @@ binRev:
 		MOV AX, [RBP + 26]
 		MOV BX, [RBP - 4]
 		MOV CX, [RBP + 24]
-		CALL boundCheck
+		CALL @boundCheck
 
 		POP AX
-		MOV [RDI + RBX], AX
-									; store variable
+		MOV [RDI + RBX], AX									; store variable
 
 		MOV AX, [RBP - 2]
 		PUSH AX
@@ -568,15 +558,15 @@ exch:
 
 ;--------------------------------------------------------------------------------------------------
 
-boundCheck:
+@boundCheck:
 		CMP BX, AX
 		JGE .leftLim
-		CALL boundERROR
+		CALL @boundERROR
 
 	.leftLim:
 		CMP CX, BX
 		JGE .rightLim
-		CALL boundERROR
+		CALL @boundERROR
 
 	.rightLim:
 		SUB BX, AX
@@ -585,20 +575,20 @@ boundCheck:
 
 		ret
 
-dynamicDeclCheck:
+@dynamicDeclCheck:
 		CMP AX, 0
 		JGE .leftNotNeg
-		CALL declNegERROR
+		CALL @declNegERROR
 
 	.leftNotNeg:
 		CMP BX, 0
 		JGE .rightNotNeg
-		CALL declNegERROR
+		CALL @declNegERROR
 
 	.rightNotNeg:
 		CMP BX, AX
 		JGE .dynChecked
-		CALL declERROR
+		CALL @declERROR
 
 	.dynChecked:
 		MOV DX, BX
@@ -609,7 +599,7 @@ dynamicDeclCheck:
 
 		ret
 
-getValuePrimitive:
+@getValuePrimitive:
 		XOR RSI, RSI
 		XOR RAX, RAX
 		PUSH RBX
@@ -621,7 +611,7 @@ getValuePrimitive:
 		ADD RAX, 8
 		SUB RSP, RAX
 		PUSH RAX
-		MOV RDI, inputInt									; get_value
+		MOV RDI, @inputInt									; get_value
 		MOV RSI, RSP
 		SUB RSI, 16
 		PUSH RBX
@@ -637,9 +627,9 @@ getValuePrimitive:
 
 		ret
 
-printIntegerArr:
+@printIntegerArr:
 		PUSH RDI
-		MOV RDI, printFormatArray
+		MOV RDI, @printFormatArray
 		XOR RSI, RSI
 		XOR RAX, RAX
 		PUSH DX
@@ -653,7 +643,7 @@ printIntegerArr:
 		PUSH RDI
 		MOVSX RBX, CX
 		MOV SI, [RDI + RBX]
-		MOV RDI, printInt
+		MOV RDI, @printInt
 		MOVSX RSI, SI
 		XOR RAX, RAX
 		PUSH CX
@@ -667,31 +657,31 @@ printIntegerArr:
 		CMP CX, DX
 		JNE .printArr
 
-		MOV RDI, printNewLine
+		MOV RDI, @printNewLine
 		XOR RSI, RSI
 		XOR RAX, RAX
 		CALL printf
 
 		ret
 
-boundERROR:
-		MOV RDI, boundPrint
+@boundERROR:
+		MOV RDI, @boundPrint
 		XOR RSI, RSI
 		XOR RAX, RAX
 		CALL printf
 		MOV EDI, 0
 		CALL exit
 
-declERROR:
-		MOV RDI, declPrint
+@declERROR:
+		MOV RDI, @declPrint
 		XOR RSI, RSI
 		XOR RAX, RAX
 		CALL printf
 		MOV EDI, 0
 		CALL exit
 
-declNegERROR:
-		MOV RDI, declNeg
+@declNegERROR:
+		MOV RDI, @declNeg
 		XOR RSI, RSI
 		XOR RAX, RAX
 		CALL printf
@@ -701,11 +691,11 @@ declNegERROR:
 ;--------------------------------------------------------------------------------------------------
 
 section .data
-		boundPrint : db "RUNTIME ERROR : Array out of bounds" , 10, 0
-		declPrint : db "RUNTIME ERROR : Invalid order of bounds in dynamic array declaration" , 10, 0
-		declNeg : db "RUNTIME ERROR : Negative bound in dynamic array declaration" , 10, 0
-		printFormatArray : db "Output : " , 0
-		printInt : db "%d ", 0
-		printNewLine : db 10, 0
-		inputIntPrompt : db "Enter an integer : " , 0
-		inputInt : db "%d", 0
+		@boundPrint : db "RUNTIME ERROR : Array out of bounds" , 10, 0
+		@declPrint : db "RUNTIME ERROR : Invalid order of bounds in dynamic array declaration" , 10, 0
+		@declNeg : db "RUNTIME ERROR : Negative bound in dynamic array declaration" , 10, 0
+		@printFormatArray : db "Output : " , 0
+		@printInt : db "%d ", 0
+		@printNewLine : db 10, 0
+		@inputIntPrompt : db "Enter an integer : " , 0
+		@inputInt : db "%d", 0

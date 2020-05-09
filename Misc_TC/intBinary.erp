@@ -1,5 +1,5 @@
 declare module binRev ;
-declare module intBinary ;
+declare module main ;
 declare module exch ;
 declare module twosComplement ;
 
@@ -28,7 +28,7 @@ start
 	end
 
 	declare bin : array [0 .. len] of integer ;
-	use module intBinary with parameters num, neg, bin ;
+	use module main with parameters num, neg, bin ;
 
 	print (bin) ;
 end
@@ -53,7 +53,7 @@ start
 	end
 end
 
-<<module intBinary>>
+<<module main>>
 takes input [num : integer, neg:boolean, bin : array [0 .. len] of integer] ;
 start
 	declare i : integer ;
