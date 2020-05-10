@@ -3,10 +3,14 @@ start
 	declare i, j, a : integer ;
 	a := 4 ;
 
-	declare A : array [0 .. a] of integer ;
+	declare A : array [5 .. 7] of integer ;
+	declare B : array [4 .. 6] of integer ;
 
 	i := 1 ;
 	j := 2 ;
+	i := j ;
 
 	A[i] := A[j] ;
+
+	B := A ;
 end

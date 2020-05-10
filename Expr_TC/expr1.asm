@@ -12,14 +12,17 @@ main:
 		MOV RBP, RSP
 
 		SUB RSP, 6											; making space for declaration
+
 		MOV AX, 4
 		MOV [RBP - 6], AX										; store variable
 
 		SUB RSP, 12											; making space for declaration
 
+
 		MOV AX, 0
 		MOV BX, [RBP - 6]
-		CALL @dynamicDeclCheck
+		CALL @dynamicDeclCheck										; checking dynamic array declaration limits
+
 
 		PUSH BX												; saving register for malloc
 		PUSH AX												; saving register for malloc
@@ -30,25 +33,31 @@ main:
 		POP BX
 		MOV [RBP - 10], BX
 
+		SUB RSP, 6											; making space for declaration
+
 		MOV AX, 1
 		MOV [RBP - 2], AX										; store variable
 
 		MOV AX, 2
 		MOV [RBP - 4], AX										; store variable
 
+		MOV AX, [RBP - 4]
+		MOV [RBP - 2], AX										; store variable
+
 		MOV RDI, [RBP - 18]
 		MOV BX, 0
 		MOV CX, [RBP - 4]
 		MOV DX, [RBP - 10]
-		CALL @boundCheck
+		CALL @boundCheck										; checking array index bound
 		MOV AX, [RDI + RBX]
 
 		MOV RDI, [RBP - 18]
 		MOV BX, 0
 		MOV CX, [RBP - 2]
 		MOV DX, [RBP - 10]
-		CALL @boundCheck
+		CALL @boundCheck										; checking array index bound
 		MOV [RDI + RBX], AX										; store variable
+
 
 
 		MOV RDI, [RBP - 18]
