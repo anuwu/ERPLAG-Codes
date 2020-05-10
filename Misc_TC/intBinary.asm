@@ -1,6 +1,7 @@
 extern printf
 extern scanf
 extern malloc
+extern free
 extern exit
 
 global main
@@ -108,6 +109,8 @@ LABEL3:
 		POP AX
 		MOV [RBP - 6], AX									; store variable
 
+
+
 		ADD RSP, 0										; restoring to parent scope
 		JMP WHILE4
 
@@ -148,6 +151,9 @@ LABEL3:
 		CALL @printIntegerArr
 
 
+		MOV RDI, [RBP - 20]
+		CALL free
+
 		MOV RSP, RBP
 		POP RBP
 		ret
@@ -163,6 +169,21 @@ twosComplement:
 		PUSH BX
 		POP AX
 		MOV [RBP - 2], AX									; store variable
+
+		SUB RSP, 12											; making space for declaration
+
+		MOV AX, 0
+		MOV BX, [RBP - 2]
+		CALL @dynamicDeclCheck
+
+		PUSH BX												; saving register for malloc
+		PUSH AX												; saving register for malloc
+		CALL malloc
+		MOV [RBP - 14], RAX
+		POP AX
+		MOV [RBP - 4], AX
+		POP BX
+		MOV [RBP - 6], BX
 
 
 	WHILE6:
@@ -196,6 +217,8 @@ twosComplement:
 		PUSH AX
 		POP AX
 		MOV [RBP - 2], AX									; store variable
+
+
 
 		ADD RSP, 0										; restoring to parent scope
 		JMP WHILE6
@@ -263,10 +286,15 @@ twosComplement:
 		POP AX
 		MOV [RBP - 2], AX									; store variable
 
+
+
 		ADD RSP, 0										; restoring to parent scope
 		JMP WHILE8
 
 	WHILE9:
+
+		MOV RDI, [RBP - 14]
+		CALL free
 
 		MOV RSP, RBP
 		POP RBP
@@ -364,6 +392,8 @@ twosComplement:
 		POP AX
 		MOV [RBP - 2], AX									; store variable
 
+
+
 		ADD RSP, 0										; restoring to parent scope
 		JMP WHILE10
 
@@ -402,6 +432,7 @@ LABEL13:
 LABEL14:
 
 		ADD RSP, 0											; restoring to parent scope
+
 
 		MOV RSP, RBP
 		POP RBP
@@ -524,10 +555,13 @@ binRev:
 		POP AX
 		MOV [RBP - 4], AX									; store variable
 
+
+
 		ADD RSP, 0										; restoring to parent scope
 		JMP WHILE15
 
 	WHILE16:
+
 
 		MOV RSP, RBP
 		POP RBP
@@ -548,6 +582,7 @@ exch:
 		PUSH BX
 		POP AX
 		MOV [RBP + 22], AX									; store variable
+
 
 
 		MOV RSP, RBP

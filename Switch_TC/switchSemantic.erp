@@ -6,6 +6,8 @@ start
 	get_value (b) ;
 	get_value (caseVal) ;
 
+	declare B : array [a .. b] of boolean ;
+
 	bool := true ;
 	switch (caseVal) start case
 	1 :
