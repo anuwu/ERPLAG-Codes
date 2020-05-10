@@ -8,6 +8,7 @@ start
 	declare num, saveNum, len : integer ;
 	declare neg : boolean ;
 
+	neg := true ;
 	get_value (num) ;
 	neg := num < 0 ;	
 
@@ -59,6 +60,7 @@ start
 	declare i : integer ;
 	
 	bin[0] := 0 ;
+	bin[1] := bin[0] ;
 	i := 1 ;
 	while (num != 0)
 	start

@@ -1,0 +1,12 @@
+<<<driver program>>>
+start
+	declare i, j, a : integer ;
+	a := 4 ;
+
+	declare A : array [0 .. a] of integer ;
+
+	i := 1 ;
+	j := 2 ;
+
+	A[i] := A[j] ;
+end
