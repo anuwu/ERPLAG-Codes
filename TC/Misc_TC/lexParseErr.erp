@@ -1,5 +1,5 @@
 <<module test>>
-takes input [a : integer] ;
+takes input [a : integer]
 returns [b : boolean] ;
 start
 	a := a + 1 ;
@@ -10,7 +10,7 @@ end
 start
 	declare i, j : integer ;
 
-	while (i <= j)
+	while (i <== j)
 	start
 		print (i) ;
 	end
