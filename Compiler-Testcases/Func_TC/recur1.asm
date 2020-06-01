@@ -3,6 +3,7 @@
 extern _printf
 extern _scanf
 extern _malloc
+extern _free
 extern _exit
 
 global _main

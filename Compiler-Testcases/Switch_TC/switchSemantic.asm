@@ -3,6 +3,7 @@
 extern _printf
 extern _scanf
 extern _malloc
+extern _free
 extern _exit
 
 global _main
@@ -166,6 +167,18 @@ _main:
 		JMP @SWITCH5
 
 @SWITCH5:
+		MOV RAX, RSP									; Stack Alignment
+		AND RAX, 15
+		ADD RAX, 8
+		SUB RSP, RAX
+		PUSH RAX
+
+		MOV RDI, [RBP - 32]
+		CALL _free								; freeing local dynamic arrays
+
+
+		POP RAX
+		ADD RSP, RAX									; Restoring Stack Alignment
 		ADD RSP, 12											; restoring to parent scope
 		SUB RSP, 4											; declaring before switch
 
@@ -216,6 +229,18 @@ _main:
 
 @SWITCH8:
 		ADD RSP, 4											; restoring to parent scope
+		MOV RAX, RSP									; Stack Alignment
+		AND RAX, 15
+		ADD RAX, 8
+		SUB RSP, RAX
+		PUSH RAX
+
+		MOV RDI, [RBP - 20]
+		CALL _free								; freeing local dynamic arrays
+
+
+		POP RAX
+		ADD RSP, RAX									; Restoring Stack Alignment
 
 		MOV RSP, RBP
 		POP RBP

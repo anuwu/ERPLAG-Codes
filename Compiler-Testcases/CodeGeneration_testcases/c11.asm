@@ -3,6 +3,7 @@
 extern _printf
 extern _scanf
 extern _malloc
+extern _free
 extern _exit
 
 global _main
@@ -331,6 +332,18 @@ array_parameter_demo:
 		MOV SI, [RBP + 40]
 		CALL @printInteger
 
+		MOV RAX, RSP									; Stack Alignment
+		AND RAX, 15
+		ADD RAX, 8
+		SUB RSP, RAX
+		PUSH RAX
+
+		MOV RDI, [RBP - 44]
+		CALL _free								; freeing local dynamic arrays
+
+
+		POP RAX
+		ADD RSP, RAX									; Restoring Stack Alignment
 
 		MOV RSP, RBP
 		POP RBP
@@ -440,6 +453,18 @@ _main:
 		MOV SI, [RBP - 10]
 		CALL @printInteger
 
+		MOV RAX, RSP									; Stack Alignment
+		AND RAX, 15
+		ADD RAX, 8
+		SUB RSP, RAX
+		PUSH RAX
+
+		MOV RDI, [RBP - 32]
+		CALL _free								; freeing local dynamic arrays
+
+
+		POP RAX
+		ADD RSP, RAX									; Restoring Stack Alignment
 
 		MOV RSP, RBP
 		POP RBP

@@ -20,6 +20,44 @@ _main:
 		MOV RBX, -2
 		CALL @getValuePrimitive
 
+		MOV AX, [RBP - 2]
+		PUSH AX
+		CALL lol											; calling user function
+		ADD RSP, 2
+
+		MOV RSP, RBP
+		POP RBP
+		MOV RAX, 0x2000001
+		XOR RDI, RDI
+		syscall
+
+;--------------------------------------------------------------------------------------------------
+
+lol:
+		PUSH RBP
+		MOV RBP, RSP
+
+		SUB RSP, 2											; making space for declaration
+
+		MOV BX, [RBP + 16]
+		PUSH BX
+		MOV AX, 2
+		PUSH AX
+		POP AX
+		POP BX
+		IMUL BX
+		PUSH AX
+		POP AX
+		MOV [RBP - 2], AX										; store variable
+
+
+	@WHILE1:
+		MOV BX, 1
+		PUSH BX
+		POP AX
+		CMP AX, 0											; checking while loop condition
+		JE @WHILE2
+
 		SUB RSP, 12											; making space for declaration
 
 		MOV RAX, RSP									; Stack Alignment
@@ -28,8 +66,8 @@ _main:
 		SUB RSP, RAX
 		PUSH RAX
 
-		MOV AX, [RBP - 2]
-		MOV BX, 10
+		MOV AX, [RBP + 16]
+		MOV BX, [RBP - 2]
 		CALL @dynamicDeclCheck										; checking dynamic array declaration limits
 
 
@@ -47,19 +85,6 @@ _main:
 
 		POP RAX
 		ADD RSP, RAX									; Restoring Stack Alignment
-		MOV RDI, @inputIntArrPrompt
-		MOV BX, [RBP - 4]
-		MOV CX, 10
-		CALL @printGetArrPrompt
-
-		MOV DX, CX
-		SUB DX, BX
-		ADD DX, 1
-		ADD DX, DX
-		MOVSX RDX, DX
-		MOV RDI, [RBP - 14]
-		CALL @getArr
-
 		MOV RAX, RSP									; Stack Alignment
 		AND RAX, 15
 		ADD RAX, 8
@@ -73,11 +98,14 @@ _main:
 		POP RAX
 		ADD RSP, RAX									; Restoring Stack Alignment
 
+		ADD RSP, 12										; restoring to parent scope
+		JMP @WHILE1
+
+	@WHILE2:
+
 		MOV RSP, RBP
 		POP RBP
-		MOV RAX, 0x2000001
-		XOR RDI, RDI
-		syscall
+		ret
 
 ;--------------------------------------------------------------------------------------------------
 
@@ -161,108 +189,10 @@ _main:
 
 		ret
 
-@printGetArrPrompt:
-		MOV RAX, RSP									; Stack Alignment
-		AND RAX, 15
-		ADD RAX, 8
-		SUB RSP, RAX
-		PUSH RAX
-		MOV SI, CX
-		SUB SI, BX
-		ADD SI, 1
-		MOVSX RSI, SI
-		XOR RAX, RAX
-		PUSH RSI
-		PUSH AX
-		PUSH BX
-		PUSH CX
-		PUSH DX
-		CALL _printf
-		POP DX
-		POP CX
-		POP BX
-		POP AX
-		POP RSI
-
-		MOV RDI, @leftRange
-		MOVSX RSI, BX
-		XOR RAX, RAX
-		PUSH RSI
-		PUSH AX
-		PUSH BX
-		PUSH CX
-		PUSH DX
-		CALL _printf
-		POP DX
-		POP CX
-		POP BX
-		POP AX
-		POP RSI
-
-		MOV RDI, @rightRange
-		MOVSX RSI, CX
-		XOR RAX, RAX
-		PUSH RSI
-		PUSH AX
-		PUSH BX
-		PUSH CX
-		PUSH DX
-		CALL _printf
-		POP DX
-		POP CX
-		POP BX
-		POP AX
-		POP RSI
-
-		POP RAX
-		ADD RSP, RAX									; Restoring Stack Alignment
-
-		ret
-
-@getArr:
-		MOV RAX, RSP									; Stack Alignment
-		AND RAX, 15
-		ADD RAX, 8
-		SUB RSP, RAX
-		PUSH RAX
-
-		PUSH RDI
-		MOV RCX, 0
-
-	.getArrLoop:								; getting array
-		MOV RDI, @inputInt
-		MOV RSI, RSP
-		SUB RSI, 24
-		PUSH RCX
-		PUSH RDX
-		PUSH RSI
-		CALL _scanf
-		POP RSI
-		POP RDX
-		POP RCX
-		MOV RBX, RCX
-		MOV AX, [RSP - 24]
-		POP RDI
-		PUSH RDI
-		MOV [RDI + RBX], AX
-
-		ADD RCX, 2
-		CMP RCX, RDX
-		JNE .getArrLoop
-
-		POP RDI
-		POP RAX
-		ADD RSP, RAX									; Restoring Stack Alignment
-
-		ret
-
 ;--------------------------------------------------------------------------------------------------
 
 section .data
 		@declPrint : db "[1m[31mRuntime Error [0m[1m--> [0mInvalid order of bounds in dynamic array declaration. Halt!" , 10, 0
 		@declNeg : db "[1m[31mRuntime Error [0m[1m--> [0mNegative bound in dynamic array declaration. Halt!" , 10, 0
 		@inputIntPrompt : db "Enter an integer : " , 0
-		@inputIntArrPrompt : db "Enter %d array elements of integer type for range ", 0
-		@leftRange : db "%d to " , 0
-		@rightRange : db "%d" ,10, 0
 		@inputInt : db "%d", 0
