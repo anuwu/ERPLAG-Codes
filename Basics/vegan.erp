@@ -1,0 +1,25 @@
+declare module isVegan ;
+
+<<<driver program>>>
+start
+	declare meat, vegan : boolean ;
+	get_value (meat) ;
+
+	[vegan] := use module isVegan with parameters meat ;
+
+	print (vegan) ;
+end
+
+<<module isVegan>>
+takes input [meat : boolean] ;
+returns [vegan : boolean] ;
+start
+	switch (meat) start case
+	true :
+		vegan := false ;
+		break ; case
+	false :
+		vegan := true ;
+		break ; end
+	
+end
