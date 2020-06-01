@@ -112,7 +112,7 @@ array_parameter_demo:
 		MOV [RBP - 2], CX
 	@FOR1:
 		MOV AX, 14
-		CMP CX,AX
+		CMP CX, AX
 		JG @FOR2
 
 		MOV RDI, RBP
@@ -226,7 +226,7 @@ array_parameter_demo:
 		MOV [RBP - 4], CX
 	@FOR3:
 		MOV AX, 14
-		CMP CX,AX
+		CMP CX, AX
 		JG @FOR4
 
 		MOV RDI, RBP
@@ -293,7 +293,7 @@ array_parameter_demo:
 		MOV [RBP - 10], CX
 	@FOR5:
 		MOV AX, 4
-		CMP CX,AX
+		CMP CX, AX
 		JG @FOR6
 
 
@@ -446,8 +446,6 @@ _main:
 		MOV RAX, 0x2000001
 		XOR RDI, RDI
 		syscall
-
-;--------------------------------------------------------------------------------------------------
 
 ;--------------------------------------------------------------------------------------------------
 

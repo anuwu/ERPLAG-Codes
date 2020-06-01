@@ -12,43 +12,18 @@ _main:
 		PUSH RBP
 		MOV RBP, RSP
 
-		SUB RSP, 8											; making space for declaration
-
 		SUB RSP, 2											; making space for declaration
 
-		MOV AX, 5
-		MOV [RBP - 10], AX										; store variable
 
-		MOV BX, 10
-		PUSH BX
-		MOV BX, [RBP - 10]
-		PUSH BX
-		MOV AX, [RBP - 10]
-		PUSH AX
-		POP AX
-		POP BX
-		IMUL BX
-		PUSH AX
-		POP AX
-		POP BX
-		SUB AX,BX
-		PUSH AX
-		POP AX
-		MOV RDI, RBP
-		SUB RDI, 8
-		MOV BX, 4
-		MOV CX, [RBP - 10]
-		MOV DX, 7
-		CALL @boundCheck										; checking array index bound
-		MOV [RDI + RBX], AX										; store variable
+		MOV RDI, @inputIntPrompt									; get_value
+		MOV RBX, -2
+		CALL @getValuePrimitive
 
-		MOV RDI, RBP
-		SUB RDI, 8
-		MOV BX, 4
-		MOV CX, [RBP - 10]
-		MOV DX, 7
-		CALL @boundCheck										; checking array index bound
-		MOV SI, [RDI + RBX]
+		MOV AX, [RBP - 2]
+		PUSH AX
+		CALL emptyMod											; calling user function
+		ADD RSP, 2
+		MOV SI, [RBP - 2]
 		CALL @printInteger
 
 
@@ -60,35 +35,46 @@ _main:
 
 ;--------------------------------------------------------------------------------------------------
 
-@boundCheck:
-		CMP CX, BX
-		JGE .leftLim
-		CALL @boundERROR
+emptyMod:
+		PUSH RBP
+		MOV RBP, RSP
 
-	.leftLim:
-		CMP DX, CX
-		JGE .rightLim
-		CALL @boundERROR
 
-	.rightLim:
-		SUB CX, BX
-		ADD CX, CX
-		MOVSX RBX, CX
-
+		MOV RSP, RBP
+		POP RBP
 		ret
 
-@boundERROR:
+;--------------------------------------------------------------------------------------------------
+
+@getValuePrimitive:
 		MOV RAX, RSP									; Stack Alignment
 		AND RAX, 15
 		ADD RAX, 8
 		SUB RSP, RAX
 		PUSH RAX
-		MOV RDI, @boundPrint
 		XOR RSI, RSI
 		XOR RAX, RAX
+		PUSH RBX
+		PUSH RCX
 		CALL _printf
-		MOV RDI, 1
-		CALL _exit
+		POP RCX
+		POP RBX
+
+		MOV RDI, @inputInt										; get_value
+		MOV RSI, RSP
+		SUB RSI, 16
+		PUSH RBX
+		PUSH RSI
+		CALL _scanf
+		POP RSI
+		POP RBX
+		MOV AX, [RSP - 16]
+		MOV [RBP + RBX], AX
+
+		POP RAX
+		ADD RSP, RAX									; Restoring Stack Alignment
+
+		ret
 
 @printInteger:
 		MOV RAX, RSP									; Stack Alignment
@@ -109,5 +95,6 @@ _main:
 ;--------------------------------------------------------------------------------------------------
 
 section .data
-		@boundPrint : db "[1m[31mRuntime Error [0m[1m--> [0mArray out of bounds. Halt!" , 10, 0
 		@printFormat : db "Output :  %d" , 10, 0
+		@inputIntPrompt : db "Enter an integer : " , 0
+		@inputInt : db "%d", 0

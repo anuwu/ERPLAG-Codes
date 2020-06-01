@@ -157,7 +157,7 @@ _main:
 		MOV [RBP - 4], CX
 	@FOR1:
 		MOV AX, 10
-		CMP CX,AX
+		CMP CX, AX
 		JG @FOR2
 
 		MOV BX, [RBP - 4]
@@ -267,6 +267,8 @@ _main:
 		CALL @printInteger
 
 
+		JMP @SWITCH5
+
 @SWITCH5:
 		ADD RSP, 24											; restoring to parent scope
 		MOV SI, [RBP - 4]
@@ -281,8 +283,6 @@ _main:
 		MOV RAX, 0x2000001
 		XOR RDI, RDI
 		syscall
-
-;--------------------------------------------------------------------------------------------------
 
 ;--------------------------------------------------------------------------------------------------
 

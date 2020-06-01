@@ -163,6 +163,8 @@ _main:
 		MOV [RBP - 2], AX										; store variable
 
 
+		JMP @SWITCH5
+
 @SWITCH5:
 		ADD RSP, 12											; restoring to parent scope
 		SUB RSP, 4											; declaring before switch
@@ -220,8 +222,6 @@ _main:
 		MOV RAX, 0x2000001
 		XOR RDI, RDI
 		syscall
-
-;--------------------------------------------------------------------------------------------------
 
 ;--------------------------------------------------------------------------------------------------
 
