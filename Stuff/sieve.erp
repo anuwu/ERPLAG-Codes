@@ -1,0 +1,75 @@
+declare module sieve ;
+
+<<<driver program>>>
+start
+	declare N:integer ;
+	get_value (N) ;
+
+	use module sieve with parameters N ;
+end
+
+
+<<module sieve>>
+takes input [N : integer] ;
+start
+	declare flag : array [2 .. N] of boolean ;
+	declare b : boolean ;
+	declare i, p, sq, cnt : integer ;
+
+	i := 2 ;
+	while (i <= N)
+	start
+		flag[i] := false ;
+		i := i + 1 ;
+	end
+
+	cnt := 0 ;
+	p := 2 ;
+	sq := p*p ;
+	while (sq <= N)
+	start
+		while (sq <= N)
+		start
+			b := flag[sq] ;
+			switch (b) start case
+			false :
+				cnt := cnt + 1 ;
+				break ; case
+			true :
+				break ; end
+
+			flag[sq] := true ;
+			sq := sq + p ;
+		end
+
+		p := p + 1 ;
+		while (p <= N AND flag[p])
+		start
+			p := p + 1 ;
+		end
+
+		sq := p*p ;
+	end
+
+	cnt := N - 1 - cnt ;
+	declare j : integer ;
+	declare primes : array[1..cnt] of integer ;
+
+	j := 1 ;
+	i := 2 ;
+	while (i <= N)
+	start
+		b := flag[i] ;
+		switch (b) start case
+		false :
+			primes[j] := i ;
+			j := j + 1 ;
+			break ; case
+		true :
+			break ; end
+
+		i := i + 1 ;
+	end
+
+	print (primes) ;
+end
